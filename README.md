@@ -57,7 +57,7 @@ Seanime is a **media server** with a **web interface** and **desktop app** for w
 - Transcoding and direct play for streaming to any device web browser
 - Online streaming with support for multiple web sources & extensions
 - Read and download manga chapters with support for multiple sources & extensions
-- Extensive extension and plugin system for adding new tools, sources, & providers.
+- Extension system for adding new sources and features
 - Schedule for tracking upcoming or missed episodes
 - Customizable UI
 - And more
