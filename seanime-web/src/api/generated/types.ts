@@ -1159,7 +1159,7 @@ export type AL_MediaSort = "ID" |
 export type AL_MediaStatus = "FINISHED" | "RELEASING" | "NOT_YET_RELEASED" | "CANCELLED" | "HIATUS"
 
 /**
- * - Filepath: internal/api/anilist/tags.go
+ * - Filepath: ..\internal\api\anilist\tags.go
  * - Filename: tags.go
  * - Package: anilist
  */
@@ -1990,7 +1990,7 @@ export type Continuity_UpdateWatchHistoryItemOptions = {
 }
 
 /**
- * - Filepath: internal/continuity/history.go
+ * - Filepath: ..\internal\continuity\history.go
  * - Filename: history.go
  * - Package: continuity
  */
@@ -3531,7 +3531,7 @@ export type Manga_PageDimension = {
 }
 
 /**
- * - Filepath: internal/manga/download.go
+ * - Filepath: ..\internal\manga\download.go
  * - Filename: download.go
  * - Package: manga
  */
@@ -4001,7 +4001,7 @@ export type Models_DummyDebridFile = {
 }
 
 /**
- * - Filepath: internal/database/models/models.go
+ * - Filepath: ..\internal\database\models\models.go
  * - Filename: models.go
  * - Package: models
  */
@@ -4033,6 +4033,20 @@ export type Models_DummyDebridSettings = {
  * - Filepath: internal/database/models/models.go
  * - Filename: models.go
  * - Package: models
+ * @description
+ *  ExtensionsSettings holds the settings related to the extension system.
+ *  
+ *  It is reachable by plugins through the "settings" permission scope, e.g.
+ *  ctx.appSettings.get("extensions.marketplaceUrl").
+ */
+export type Models_ExtensionsSettings = {
+    marketplaceUrl: string
+}
+
+/**
+ * - Filepath: internal/database/models/models.go
+ * - Filename: models.go
+ * - Package: models
  */
 export type Models_HomeItem = {
     id: string
@@ -4048,14 +4062,14 @@ export type Models_HomeItem = {
 }
 
 /**
- * - Filepath: internal/database/models/models.go
+ * - Filepath: ..\internal\database\models\models.go
  * - Filename: models.go
  * - Package: models
  */
 export type Models_IntSlice = Array<number>
 
 /**
- * - Filepath: internal/database/models/models.go
+ * - Filepath: ..\internal\database\models\models.go
  * - Filename: models.go
  * - Package: models
  */
@@ -4240,6 +4254,7 @@ export type Models_Settings = {
     discord?: Models_DiscordSettings
     notifications?: Models_NotificationSettings
     nakama?: Models_NakamaSettings
+    extensions?: Models_ExtensionsSettings
     id: number
     createdAt?: string
     updatedAt?: string
@@ -4257,7 +4272,7 @@ export type Models_SilencedMediaEntry = {
 }
 
 /**
- * - Filepath: internal/database/models/models.go
+ * - Filepath: ..\internal\database\models\models.go
  * - Filename: models.go
  * - Package: models
  */
@@ -4555,7 +4570,7 @@ export type Nakama_NakamaAnimeLibrary = {
 }
 
 /**
- * - Filepath: internal/nakama/share.go
+ * - Filepath: ..\internal\nakama\share.go
  * - Filename: share.go
  * - Package: nakama
  */

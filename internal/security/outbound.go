@@ -53,6 +53,32 @@ func ValidateOutboundUrl(rawURL string) error {
 	return nil
 }
 
+// ValidateMarketplaceUrl validates a marketplace URL coming from the client or a plugin.
+// The scheme and host checks run even outside strict mode, unlike ValidateOutboundUrl.
+func ValidateMarketplaceUrl(rawURL string) error {
+	rawURL = strings.TrimSpace(rawURL)
+	if rawURL == "" {
+		return nil
+	}
+
+	parsed, err := url.Parse(rawURL)
+	if err != nil {
+		return fmt.Errorf("invalid marketplace URL: %w", err)
+	}
+
+	switch strings.ToLower(parsed.Scheme) {
+	case "http", "https":
+	default:
+		return fmt.Errorf("invalid marketplace URL: scheme must be http or https")
+	}
+
+	if strings.TrimSpace(parsed.Hostname()) == "" {
+		return fmt.Errorf("invalid marketplace URL: missing host")
+	}
+
+	return ValidateOutboundUrl(rawURL)
+}
+
 func isPrivateNetworkAddr(addr netip.Addr) bool {
 	addr = addr.Unmap()
 	return addr.IsLoopback() || addr.IsPrivate() || addr.IsLinkLocalUnicast() || addr.IsLinkLocalMulticast() || addr.IsMulticast() || addr.IsUnspecified()

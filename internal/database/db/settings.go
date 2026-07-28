@@ -2,6 +2,7 @@ package db
 
 import (
 	"seanime/internal/database/models"
+	"seanime/internal/security"
 	"seanime/internal/util"
 	"strings"
 
@@ -11,6 +12,15 @@ import (
 var CurrSettings *models.Settings
 
 func (db *Database) UpsertSettings(settings *models.Settings) (*models.Settings, error) {
+	// Validated here because the client, the settings path endpoint and plugins all go through this
+	if settings != nil && settings.Extensions != nil {
+		settings.Extensions.MarketplaceURL = strings.TrimSpace(settings.Extensions.MarketplaceURL)
+		if err := security.ValidateMarketplaceUrl(settings.Extensions.MarketplaceURL); err != nil {
+			db.Logger.Error().Err(err).Msg("db: Rejected settings with an invalid marketplace URL")
+			return nil, err
+		}
+	}
+
 	if settings != nil && settings.Torrent != nil {
 		settings.Torrent.QBittorrentHost = strings.TrimSpace(strings.Trim(settings.Torrent.QBittorrentHost, "\""))
 		settings.Torrent.TransmissionHost = strings.TrimSpace(strings.Trim(settings.Torrent.TransmissionHost, "\""))
@@ -306,6 +316,10 @@ func CloneSettings(settings *models.Settings) *models.Settings {
 	}
 	if settings.Manga != nil {
 		clone.Manga = new(*settings.Manga)
+	}
+	if settings.Extensions != nil {
+		ext := *settings.Extensions
+		clone.Extensions = &ext
 	}
 	return &clone
 }

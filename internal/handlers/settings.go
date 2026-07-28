@@ -265,6 +265,13 @@ func (h *Handler) HandleSaveSettings(c echo.Context) error {
 		autoDownloaderSettings.Enabled = false
 	}
 
+	// Not part of this form, keep the stored value
+	var extensionsSettings *models.ExtensionsSettings
+	if prevSettings != nil && prevSettings.Extensions != nil {
+		clone := *prevSettings.Extensions
+		extensionsSettings = &clone
+	}
+
 	settings, err := h.App.Database.UpsertSettings(&models.Settings{
 		BaseModel: models.BaseModel{
 			ID:        1,
@@ -279,6 +286,7 @@ func (h *Handler) HandleSaveSettings(c echo.Context) error {
 		Notifications:  &b.Notifications,
 		Nakama:         &b.Nakama,
 		AutoDownloader: &autoDownloaderSettings,
+		Extensions:     extensionsSettings,
 	})
 
 	if err != nil {

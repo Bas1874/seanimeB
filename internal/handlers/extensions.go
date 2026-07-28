@@ -555,6 +555,13 @@ func (h *Handler) HandleGetMarketplaceExtensions(c echo.Context) error {
 		marketplaceUrl, _ = url.PathUnescape(encodedMarketplaceUrl)
 	}
 
+	// The query param is kept for older clients
+	if marketplaceUrl == "" {
+		if settings, err := h.App.Database.GetSettings(); err == nil && settings.Extensions != nil {
+			marketplaceUrl = strings.TrimSpace(settings.Extensions.MarketplaceURL)
+		}
+	}
+
 	if h.App.FeatureManager.IsDisabled(core.ManageExtensions) {
 		marketplaceUrl = ""
 	}
@@ -563,7 +570,7 @@ func (h *Handler) HandleGetMarketplaceExtensions(c echo.Context) error {
 	if targetMarketplaceUrl == "" {
 		targetMarketplaceUrl = constants.DefaultExtensionMarketplaceURL
 	}
-	if err := security.ValidateOutboundUrl(targetMarketplaceUrl); err != nil {
+	if err := security.ValidateMarketplaceUrl(targetMarketplaceUrl); err != nil {
 		return h.RespondWithStatusError(c, echo.ErrForbidden.Code, err)
 	}
 

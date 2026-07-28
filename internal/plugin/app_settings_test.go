@@ -263,3 +263,68 @@ func TestAppSettingsPatchSavesSecondaryRoots(t *testing.T) {
 	require.Equal(t, 1, torrentstreamSaved)
 	require.Equal(t, 1, debridSaved)
 }
+
+func TestAppSettingsSetPathPromptShowsValueAndIsNotReusedAcrossValues(t *testing.T) {
+	appCtx, database, ws := newAppSettingsTestContext(t, SettingsActions{})
+	seedAppSettings(t, database)
+
+	vm, obj, _ := bindTestAppSettings(t, appCtx)
+	settingsObj := obj.Get("appSettings").ToObject(vm)
+	set, ok := goja.AssertFunction(settingsObj.Get("set"))
+	require.True(t, ok)
+
+	const path = "extensions.marketplaceUrl"
+	const firstURL = "https://example.com/marketplace.json"
+	const secondURL = "https://attacker.example/marketplace.json"
+
+	ret, err := set(settingsObj, vm.ToValue(path), vm.ToValue(firstURL))
+	require.NoError(t, err)
+
+	request := waitForSettingsPromptRequest(t, ws, 0)
+	require.Contains(t, request.Details, path+" = "+firstURL)
+	allowSettingsPrompt(ws, request.ID)
+	_ = requirePromiseFulfilled(t, ret)
+
+	settings, err := database.GetSettings()
+	require.NoError(t, err)
+	require.NotNil(t, settings.Extensions)
+	require.Equal(t, firstURL, settings.Extensions.MarketplaceURL)
+
+	// Writing a different value to the same path must prompt again
+	ret, err = set(settingsObj, vm.ToValue(path), vm.ToValue(secondURL))
+	require.NoError(t, err)
+
+	secondRequest := waitForOtherSettingsPromptRequest(t, ws, request.ID)
+	require.Contains(t, secondRequest.Details, path+" = "+secondURL)
+	allowSettingsPrompt(ws, secondRequest.ID)
+	_ = requirePromiseFulfilled(t, ret)
+
+	settings, err = database.GetSettings()
+	require.NoError(t, err)
+	require.NotNil(t, settings.Extensions)
+	require.Equal(t, secondURL, settings.Extensions.MarketplaceURL)
+}
+
+// waitForOtherSettingsPromptRequest waits for a prompt request other than excludeID.
+// Fails if the prompt was cached, since no new request is emitted then.
+func waitForOtherSettingsPromptRequest(t *testing.T, ws *events.MockWSEventManager, excludeID string) prompt.Request {
+	t.Helper()
+
+	var request prompt.Request
+	require.Eventually(t, func() bool {
+		for _, event := range ws.Events() {
+			if event.Type != prompt.EventRequest {
+				continue
+			}
+			payload, ok := event.Payload.(prompt.Request)
+			if !ok || payload.ID == excludeID {
+				continue
+			}
+			request = payload
+			return true
+		}
+		return false
+	}, time.Second, 10*time.Millisecond, "expected a new prompt for a different value")
+
+	return request
+}

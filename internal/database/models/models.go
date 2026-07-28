@@ -58,6 +58,12 @@ type Settings struct {
 	Discord        *DiscordSettings        `gorm:"embedded" json:"discord"`
 	Notifications  *NotificationSettings   `gorm:"embedded" json:"notifications"`
 	Nakama         *NakamaSettings         `gorm:"embedded;embeddedPrefix:nakama_" json:"nakama"`
+	// v3.11+
+	Extensions *ExtensionsSettings `gorm:"embedded;embeddedPrefix:extensions_" json:"extensions"`
+}
+
+type ExtensionsSettings struct {
+	MarketplaceURL string `gorm:"column:marketplace_url" json:"marketplaceUrl"` // Empty means the default marketplace
 }
 
 type AnilistSettings struct {

@@ -42,3 +42,50 @@ func TestValidateOutboundURL(t *testing.T) {
 		}
 	})
 }
+
+func TestValidateMarketplaceUrl(t *testing.T) {
+	t.Cleanup(func() {
+		SetSecureMode("")
+	})
+
+	t.Run("allows an empty url", func(t *testing.T) {
+		SetSecureMode("")
+		if err := ValidateMarketplaceUrl("  "); err != nil {
+			t.Fatalf("expected an empty marketplace url to be allowed: %v", err)
+		}
+	})
+
+	t.Run("allows an https url outside strict mode", func(t *testing.T) {
+		SetSecureMode("")
+		if err := ValidateMarketplaceUrl("https://example.com/marketplace.json"); err != nil {
+			t.Fatalf("expected an https marketplace url to be allowed: %v", err)
+		}
+	})
+
+	t.Run("blocks non-http schemes outside strict mode", func(t *testing.T) {
+		SetSecureMode("")
+		for _, rawURL := range []string{
+			"file:///etc/passwd",
+			"javascript:alert(1)",
+			"ftp://example.com/marketplace.json",
+		} {
+			if err := ValidateMarketplaceUrl(rawURL); err == nil {
+				t.Fatalf("expected %q to be blocked", rawURL)
+			}
+		}
+	})
+
+	t.Run("blocks a url without a host", func(t *testing.T) {
+		SetSecureMode("")
+		if err := ValidateMarketplaceUrl("https:///marketplace.json"); err == nil {
+			t.Fatal("expected a marketplace url without a host to be blocked")
+		}
+	})
+
+	t.Run("blocks private hosts in strict mode", func(t *testing.T) {
+		SetSecureMode(SecureModeStrict)
+		if err := ValidateMarketplaceUrl("http://192.168.1.10/marketplace.json"); err == nil {
+			t.Fatal("expected a private marketplace url to be blocked in strict mode")
+		}
+	})
+}

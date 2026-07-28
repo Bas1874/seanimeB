@@ -6,7 +6,7 @@ import {
     useReloadExternalExtension,
 } from "@/api/hooks/extensions.hooks"
 import { EXTENSION_TYPE } from "@/app/(main)/extensions/_containers/extension-list"
-import { DEFAULT_MARKETPLACE_URL, marketplaceUrlAtom } from "@/app/(main)/extensions/_lib/marketplace.atoms"
+import { DEFAULT_MARKETPLACE_URL, useMarketplaceUrl } from "@/app/(main)/extensions/_lib/marketplace.atoms"
 import { LANGUAGES_LIST } from "@/app/(main)/manga/_lib/language-map"
 import { LuffyError } from "@/components/shared/luffy-error"
 import { SeaImage } from "@/components/shared/sea-image"
@@ -23,7 +23,6 @@ import { Select } from "@/components/ui/select"
 import { StaticTabs } from "@/components/ui/tabs"
 import { TextInput } from "@/components/ui/text-input"
 import { useSearchParams } from "@/lib/navigation"
-import { useAtom } from "jotai/react"
 import capitalize from "lodash/capitalize"
 import orderBy from "lodash/orderBy"
 import React, { useMemo } from "react"
@@ -48,11 +47,12 @@ export function MarketplaceExtensions(props: MarketplaceExtensionsProps) {
     const [searchTerm, setSearchTerm] = React.useState("")
     const [filterType, setFilterType] = React.useState<string>("all")
     const [filterLanguage, setFilterLanguage] = React.useState<string>("all")
-    const [marketplaceUrl, setMarketplaceUrl] = useAtom(marketplaceUrlAtom)
+    const { marketplaceUrl, setMarketplaceUrl, isUpdatingMarketplaceUrl } = useMarketplaceUrl()
     const [isUrlModalOpen, setIsUrlModalOpen] = React.useState(false)
     const [tempUrl, setTempUrl] = React.useState(marketplaceUrl)
     const [urlError, setUrlError] = React.useState("")
-    const [isUpdatingUrl, setIsUpdatingUrl] = React.useState(false)
+    const [isSubmittingUrl, setIsSubmittingUrl] = React.useState(false)
+    const isUpdatingUrl = isSubmittingUrl || isUpdatingMarketplaceUrl
     const isDefaultMarketplace = marketplaceUrl === DEFAULT_MARKETPLACE_URL
 
     const { data: marketplaceExtensions, isPending: isLoadingMarketplace, refetch } = useGetMarketplaceExtensions(marketplaceUrl)
@@ -186,19 +186,18 @@ export function MarketplaceExtensions(props: MarketplaceExtensionsProps) {
     // handle URL change
     const handleUrlChange = async () => {
         if (validateUrl(tempUrl)) {
-            setIsUpdatingUrl(true)
+            setIsSubmittingUrl(true)
             try {
-                setMarketplaceUrl(tempUrl)
+                await setMarketplaceUrl(tempUrl)
                 await refetch()
                 setIsUrlModalOpen(false)
-                toast.success("Marketplace URL updated")
             }
             catch (error) {
-                toast.error("Failed to fetch extensions from the provided URL")
-                console.error("Error fetching extensions:", error)
+                toast.error("Failed to update the marketplace URL")
+                console.error("Error updating marketplace URL:", error)
             }
             finally {
-                setIsUpdatingUrl(false)
+                setIsSubmittingUrl(false)
             }
         }
     }
@@ -211,19 +210,18 @@ export function MarketplaceExtensions(props: MarketplaceExtensionsProps) {
 
     // apply default URL immediately
     const applyDefaultUrl = async () => {
-        setIsUpdatingUrl(true)
+        setIsSubmittingUrl(true)
         try {
-            setMarketplaceUrl(DEFAULT_MARKETPLACE_URL)
+            await setMarketplaceUrl(DEFAULT_MARKETPLACE_URL)
             await refetch()
             setIsUrlModalOpen(false)
-            toast.success("Reset to default marketplace URL")
         }
         catch (error) {
-            toast.error("Failed to fetch extensions from the default URL")
-            console.error("Error fetching extensions:", error)
+            toast.error("Failed to reset the marketplace URL")
+            console.error("Error resetting marketplace URL:", error)
         }
         finally {
-            setIsUpdatingUrl(false)
+            setIsSubmittingUrl(false)
         }
     }
 

@@ -24876,7 +24876,7 @@
     "comments": []
   },
   {
-    "filepath": "../internal/api/anilist/tags.go",
+    "filepath": "..\\internal\\api\\anilist\\tags.go",
     "filename": "tags.go",
     "name": "MediaTagMap",
     "formattedName": "AL_MediaTagMap",
@@ -27900,7 +27900,7 @@
     "comments": []
   },
   {
-    "filepath": "../internal/continuity/history.go",
+    "filepath": "..\\internal\\continuity\\history.go",
     "filename": "history.go",
     "name": "WatchHistory",
     "formattedName": "Continuity_WatchHistory",
@@ -30583,11 +30583,46 @@
         "required": false,
         "public": true,
         "comments": []
+      },
+      {
+        "name": "Extensions",
+        "jsonName": "extensions",
+        "goType": "ExtensionsSettings",
+        "typescriptType": "Models_ExtensionsSettings",
+        "usedTypescriptType": "Models_ExtensionsSettings",
+        "usedStructName": "models.ExtensionsSettings",
+        "required": false,
+        "public": true,
+        "comments": []
       }
     ],
     "comments": [],
     "embeddedStructNames": [
       "models.BaseModel"
+    ]
+  },
+  {
+    "filepath": "../internal/database/models/models.go",
+    "filename": "models.go",
+    "name": "ExtensionsSettings",
+    "formattedName": "Models_ExtensionsSettings",
+    "package": "models",
+    "fields": [
+      {
+        "name": "MarketplaceURL",
+        "jsonName": "marketplaceUrl",
+        "goType": "string",
+        "typescriptType": "string",
+        "required": true,
+        "public": true,
+        "comments": []
+      }
+    ],
+    "comments": [
+      " ExtensionsSettings holds the settings related to the extension system.",
+      "",
+      " It is reachable by plugins through the \"settings\" permission scope, e.g.",
+      " ctx.appSettings.get(\"extensions.marketplaceUrl\")."
     ]
   },
   {
@@ -30914,7 +30949,7 @@
     "comments": []
   },
   {
-    "filepath": "../internal/database/models/models.go",
+    "filepath": "..\\internal\\database\\models\\models.go",
     "filename": "models.go",
     "name": "LibraryPaths",
     "formattedName": "Models_LibraryPaths",
@@ -31030,7 +31065,7 @@
     "comments": []
   },
   {
-    "filepath": "../internal/database/models/models.go",
+    "filepath": "..\\internal\\database\\models\\models.go",
     "filename": "models.go",
     "name": "IntSlice",
     "formattedName": "Models_IntSlice",
@@ -33409,7 +33444,7 @@
     "comments": []
   },
   {
-    "filepath": "../internal/database/models/models.go",
+    "filepath": "..\\internal\\database\\models\\models.go",
     "filename": "models.go",
     "name": "DummyDebridFiles",
     "formattedName": "Models_DummyDebridFiles",
@@ -33665,7 +33700,7 @@
     ]
   },
   {
-    "filepath": "../internal/database/models/models.go",
+    "filepath": "..\\internal\\database\\models\\models.go",
     "filename": "models.go",
     "name": "StringSlice",
     "formattedName": "Models_StringSlice",
@@ -58509,7 +58544,7 @@
     ]
   },
   {
-    "filepath": "../internal/local/database_models.go",
+    "filepath": "..\\internal\\local\\database_models.go",
     "filename": "database_models.go",
     "name": "StringMap",
     "formattedName": "Local_StringMap",
@@ -58523,7 +58558,7 @@
     "comments": null
   },
   {
-    "filepath": "../internal/local/database_models.go",
+    "filepath": "..\\internal\\local\\database_models.go",
     "filename": "database_models.go",
     "name": "LocalMangaChapterContainers",
     "formattedName": "Local_LocalMangaChapterContainers",
@@ -60059,7 +60094,7 @@
     "comments": []
   },
   {
-    "filepath": "../internal/manga/download.go",
+    "filepath": "..\\internal\\manga\\download.go",
     "filename": "download.go",
     "name": "MediaMap",
     "formattedName": "Manga_MediaMap",
@@ -60074,7 +60109,7 @@
     "comments": null
   },
   {
-    "filepath": "../internal/manga/download.go",
+    "filepath": "..\\internal\\manga\\download.go",
     "filename": "download.go",
     "name": "ProviderDownloadMap",
     "formattedName": "Manga_ProviderDownloadMap",
@@ -60502,7 +60537,7 @@
     "comments": []
   },
   {
-    "filepath": "../internal/manga/downloader/chapter_downloader.go",
+    "filepath": "..\\internal\\manga\\downloader\\chapter_downloader.go",
     "filename": "chapter_downloader.go",
     "name": "Registry",
     "formattedName": "ChapterDownloader_Registry",
@@ -74652,7 +74687,7 @@
     "comments": []
   },
   {
-    "filepath": "../internal/nakama/share.go",
+    "filepath": "..\\internal\\nakama\\share.go",
     "filename": "share.go",
     "name": "NakamaCustomSourceMap",
     "formattedName": "Nakama_NakamaCustomSourceMap",
@@ -76793,6 +76828,187 @@
         "typescriptType": "NativePlayer_VideoCoreDelegate",
         "usedTypescriptType": "NativePlayer_VideoCoreDelegate",
         "usedStructName": "nativeplayer.VideoCoreDelegate",
+        "required": true,
+        "public": true,
+        "comments": []
+      }
+    ],
+    "comments": []
+  },
+  {
+    "filepath": "../internal/notification/hub.go",
+    "filename": "hub.go",
+    "name": "Hub",
+    "formattedName": "Hub",
+    "package": "notification",
+    "fields": [],
+    "comments": []
+  },
+  {
+    "filepath": "../internal/notification/hub.go",
+    "filename": "hub.go",
+    "name": "Severity",
+    "formattedName": "Severity",
+    "package": "notification",
+    "fields": [],
+    "aliasOf": {
+      "goType": "string",
+      "typescriptType": "string",
+      "declaredValues": [
+        "\"normal\"",
+        "\"info\"",
+        "\"success\"",
+        "\"warning\"",
+        "\"error\""
+      ]
+    },
+    "comments": []
+  },
+  {
+    "filepath": "../internal/notification/hub.go",
+    "filename": "hub.go",
+    "name": "Urgency",
+    "formattedName": "Urgency",
+    "package": "notification",
+    "fields": [],
+    "aliasOf": {
+      "goType": "string",
+      "typescriptType": "string",
+      "declaredValues": [
+        "\"silent\"",
+        "\"normal\"",
+        "\"urgent\""
+      ]
+    },
+    "comments": []
+  },
+  {
+    "filepath": "../internal/notification/hub.go",
+    "filename": "hub.go",
+    "name": "Progress",
+    "formattedName": "Progress",
+    "package": "notification",
+    "fields": [
+      {
+        "name": "Current",
+        "jsonName": "Current",
+        "goType": "int",
+        "typescriptType": "number",
+        "required": true,
+        "public": true,
+        "comments": []
+      },
+      {
+        "name": "Total",
+        "jsonName": "Total",
+        "goType": "int",
+        "typescriptType": "number",
+        "required": true,
+        "public": true,
+        "comments": []
+      },
+      {
+        "name": "Intermediate",
+        "jsonName": "Intermediate",
+        "goType": "bool",
+        "typescriptType": "boolean",
+        "required": true,
+        "public": true,
+        "comments": []
+      }
+    ],
+    "comments": []
+  },
+  {
+    "filepath": "../internal/notification/hub.go",
+    "filename": "hub.go",
+    "name": "Notification",
+    "formattedName": "Notification",
+    "package": "notification",
+    "fields": [
+      {
+        "name": "ID",
+        "jsonName": "id",
+        "goType": "string",
+        "typescriptType": "string",
+        "required": true,
+        "public": true,
+        "comments": []
+      },
+      {
+        "name": "EmitterId",
+        "jsonName": "emitterId",
+        "goType": "string",
+        "typescriptType": "string",
+        "required": true,
+        "public": true,
+        "comments": []
+      },
+      {
+        "name": "Title",
+        "jsonName": "title",
+        "goType": "string",
+        "typescriptType": "string",
+        "required": true,
+        "public": true,
+        "comments": []
+      },
+      {
+        "name": "Body",
+        "jsonName": "body",
+        "goType": "string",
+        "typescriptType": "string",
+        "required": true,
+        "public": true,
+        "comments": []
+      },
+      {
+        "name": "Severity",
+        "jsonName": "severity",
+        "goType": "Severity",
+        "typescriptType": "Severity",
+        "usedTypescriptType": "Severity",
+        "usedStructName": "notification.Severity",
+        "required": true,
+        "public": true,
+        "comments": []
+      },
+      {
+        "name": "Urgency",
+        "jsonName": "urgency",
+        "goType": "Urgency",
+        "typescriptType": "Urgency",
+        "usedTypescriptType": "Urgency",
+        "usedStructName": "notification.Urgency",
+        "required": true,
+        "public": true,
+        "comments": []
+      },
+      {
+        "name": "ShouldNotifySystem",
+        "jsonName": "shouldNotifySystem",
+        "goType": "bool",
+        "typescriptType": "boolean",
+        "required": true,
+        "public": true,
+        "comments": []
+      },
+      {
+        "name": "HasNotifiedSystem",
+        "jsonName": "hasNotifiedSystem",
+        "goType": "bool",
+        "typescriptType": "boolean",
+        "required": true,
+        "public": true,
+        "comments": []
+      },
+      {
+        "name": "Progress",
+        "jsonName": "progress",
+        "goType": "Progress",
+        "typescriptType": "Progress",
+        "usedTypescriptType": "Progress",
+        "usedStructName": "notification.Progress",
         "required": true,
         "public": true,
         "comments": []
@@ -100674,6 +100890,39 @@
         "jsonName": "updateStride",
         "goType": "int64",
         "typescriptType": "number",
+        "required": true,
+        "public": false,
+        "comments": []
+      },
+      {
+        "name": "mu",
+        "jsonName": "mu",
+        "goType": "sync.Mutex",
+        "typescriptType": "Mutex",
+        "usedTypescriptType": "Mutex",
+        "usedStructName": "sync.Mutex",
+        "required": false,
+        "public": false,
+        "comments": []
+      },
+      {
+        "name": "closeOnce",
+        "jsonName": "closeOnce",
+        "goType": "sync.Once",
+        "typescriptType": "Once",
+        "usedTypescriptType": "Once",
+        "usedStructName": "sync.Once",
+        "required": false,
+        "public": false,
+        "comments": []
+      },
+      {
+        "name": "closeErr",
+        "jsonName": "closeErr",
+        "goType": "error",
+        "typescriptType": "error",
+        "usedTypescriptType": "error",
+        "usedStructName": "torrentutil.error",
         "required": true,
         "public": false,
         "comments": []
